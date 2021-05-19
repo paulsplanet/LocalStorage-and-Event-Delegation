@@ -78,6 +78,8 @@
 
         addItems.addEventListener('submit', addItem);
         itemsList.addEventListener('click', toggleDone);
+        
+        
 
         function addItem(e) {
             e.preventDefault();
@@ -113,7 +115,7 @@
             populateList(items, itemsList);
         }
 
-        populateList(items, itemsList)
+        populateList(items, itemsList) // app is not working when this is on the top
 
     </script>
 </body>
