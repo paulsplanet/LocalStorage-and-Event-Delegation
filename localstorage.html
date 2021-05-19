@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="paulsplanetlogo.png">
+    <title>Sushi Planet</title>
+    <style>
+        * { padding: 0; margin: 0;}
+        html body { width: 100%; height:100%;}
+        body {
+            background-image: url("https://www.kobejones.com.au/wp-content/uploads/2017/12/Kobe-Jones-Art-of-Japanese-Food-Decoration.jpg");
+            background-size: 100vw 110vh;
+        }
+        #wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 350px;
+            background-color: rgba(252, 252, 252, 0.7);
+            display: flex;
+            flex-direction: column;
+            border-radius: 25px;
+        }
+        h2 {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0px;
+        }
+        form {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0px;
+        }
+        input {
+            line-height: 25px;
+        }
+        li {
+            margin: 10px 70px;
+            border-bottom: 2px solid rgb(191, 191, 191);
+            font-weight: 600;
+        }
+        
+
+    </style>
+</head>
+<body>
+    <main id="wrapper">
+        <h2>Sushi Planet</h2>
+        <ul class="plates">
+            <li>Loading Sushi...</li>
+            
+        </ul>
+        <form class="add-items">
+            <input type="text" name="item" placeholder="Sushi Name" required>
+            <input type="submit" value="+ Add Item">
+        </form>
+    </main>
+
+    <script>
+        const addItems = document.querySelector('.add-items');
+        const itemsList = document.querySelector('.plates');
+        const items = [];
+
+        addItems.addEventListener('submit', addItem);
+
+        function addItem(e) {
+            e.preventDefault();
+            const text = (this.querySelector('[name=item]')).value;
+            const item = {
+                text: text,
+                done: false,
+            };
+
+            items.push(item)
+            populateList(items, itemsList)
+            this.reset();
+        }
+
+        function populateList(plates = [], platesList) {
+            platesList.innerHTML = plates.map((plate, i ) => {
+                return `
+                <li>
+                    <input type="checkbox" data-index=${i} id="item${i}" />
+                    <label for="">${plate.text}</label>
+                </li>
+                `;
+            }).join('');
+        }
+
+    </script>
+</body>
+</html>
