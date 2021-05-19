@@ -8,16 +8,16 @@
     <title>Sushi Planet</title>
     <style>
         * { padding: 0; margin: 0;}
-        html body { width: 100%; height:100%;}
+        html { width: 100%; height:100%;}
         body {
             background-image: url("https://www.kobejones.com.au/wp-content/uploads/2017/12/Kobe-Jones-Art-of-Japanese-Food-Decoration.jpg");
             background-size: 100vw 110vh;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         #wrapper {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             width: 350px;
             background-color: rgba(252, 252, 252, 0.7);
             display: flex;
@@ -41,6 +41,18 @@
             margin: 10px 70px;
             border-bottom: 2px solid rgb(191, 191, 191);
             font-weight: 600;
+            list-style: none;
+        }
+        .plates input:checked +label::before {
+            content:"";
+            background: url("sushicheck.jpeg");
+            background-size: cover;
+            width:14px; height: 14px;
+            display: inline-block;
+            margin-right: 5px;
+        }
+        .plates input:checked{
+            display: none;
         }
         
 
@@ -62,9 +74,10 @@
     <script>
         const addItems = document.querySelector('.add-items');
         const itemsList = document.querySelector('.plates');
-        const items = [];
+        const items = JSON.parse(localStorage.getItem('items')) || [];
 
         addItems.addEventListener('submit', addItem);
+        itemsList.addEventListener('click', toggleDone);
 
         function addItem(e) {
             e.preventDefault();
@@ -76,6 +89,7 @@
 
             items.push(item)
             populateList(items, itemsList)
+            localStorage.setItem('items', JSON.stringify(items));
             this.reset();
         }
 
@@ -83,12 +97,23 @@
             platesList.innerHTML = plates.map((plate, i ) => {
                 return `
                 <li>
-                    <input type="checkbox" data-index=${i} id="item${i}" />
-                    <label for="">${plate.text}</label>
+                    <input type="checkbox" data-index=${i} id="item${i}" ${plate.done ? 'checked' : ''} />
+                    <label for="item${i}">${plate.text}</label>
                 </li>
                 `;
             }).join('');
         }
+
+        function toggleDone(e) {
+            if(!e.target.matches('input')) return; // skip this unless it's an input
+            const el = e.target;
+            const index = el.dataset.index;
+            items[index].done = !items[index].done;
+            localStorage.setItem('items', JSON.stringify(items));
+            populateList(items, itemsList);
+        }
+
+        populateList(items, itemsList)
 
     </script>
 </body>
